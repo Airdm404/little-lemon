@@ -5,22 +5,15 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 
-
 @Composable
-fun MyNavigation(navController: NavHostController, route: String) {
-    NavHost(navController = navController, startDestination = route) {
+fun Navigation(navController: NavHostController, startDestination: String, database: AppDatabase) {
 
-        composable(Home.route) {
-            Home(navController = navController)
-        }
+    NavHost(navController = navController, startDestination = startDestination) {
 
-        composable(Onboarding.route) {
-            Onboarding(navController = navController)
-        }
+        composable(Onboarding.route) { Onboarding(navController) }
+        composable(Home.route) { Home(navController, database) }
+        composable(Profile.route) { Profile(navController) }
 
-        composable(Profile.route) {
-            Profile(navController = navController)
-        }
     }
-
 }
+

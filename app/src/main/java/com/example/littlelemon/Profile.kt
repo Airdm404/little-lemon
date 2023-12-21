@@ -2,33 +2,37 @@ package com.example.littlelemon
 
 import android.content.Context
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun Profile(navController: NavHostController) {
     val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("LittleLemonUserInfo", Context.MODE_PRIVATE)
+    val sharedPreferences = context.getSharedPreferences("LittleLemonUserData", Context.MODE_PRIVATE)
+    val firstName = sharedPreferences.getString("firstName", "") ?: ""
+    val lastName = sharedPreferences.getString("lastName", "") ?: ""
+    val email = sharedPreferences.getString("email", "") ?: ""
 
     Column(
         modifier = Modifier
@@ -47,67 +51,77 @@ fun Profile(navController: NavHostController) {
         Text(
             text = "Personal information",
             fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Left,
             modifier = Modifier.padding(8.dp)
         )
 
         Spacer(modifier = Modifier.height(40.dp))
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(
-                text = "First name:",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
-            )
-            Text(
-                text = "${sharedPreferences.getString("firstName", "")}",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
-                    .padding(start= 100.dp)
-            )
-        }
 
+        //User Info
 
-        Spacer(modifier = Modifier.height(30.dp))
+        Text(
+            text = "First name",
+            fontSize = 14.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.padding(8.dp)
+        )
+        OutlinedTextField(
+            value = firstName,
+            onValueChange = {},
+            enabled = false,
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .align(Alignment.CenterHorizontally)
+        )
 
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(
-                text = "Last name:",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
+        Spacer(modifier = Modifier.height(20.dp))
 
-            )
-            Text(
-                text = "${sharedPreferences.getString("lastName", "")}",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
-                    .padding(start= 100.dp)
-            )
-        }
+        Text(
+            text = "Last name",
+            fontSize = 14.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.padding(8.dp)
+        )
+        OutlinedTextField(
+            value = lastName,
+            onValueChange = {},
+            enabled = false,
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .align(Alignment.CenterHorizontally)
+        )
 
+        Spacer(modifier = Modifier.height(20.dp))
 
-        Spacer(modifier = Modifier.height(30.dp))
-        
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(
-                text = "Email:",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
-            )
-            Text(
-                text = "${sharedPreferences.getString("email", "default")}",
-                fontSize = 14.sp,
-                textAlign = TextAlign.Left,
-                modifier = Modifier.padding(8.dp)
-                    .padding(start= 100.dp)
-            )
+        Text(
+            text = "Email",
+            fontSize = 14.sp,
+            textAlign = TextAlign.Left,
+            modifier = Modifier.padding(8.dp)
+        )
+        OutlinedTextField(
+            value = email,
+            onValueChange = {},
+            enabled = false,
+            textStyle = TextStyle(
+                color = Color.Black,
+                fontSize = 16.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .align(Alignment.CenterHorizontally)
+        )
 
-        }
 
         Spacer(modifier = Modifier.height(100.dp))
 
@@ -116,19 +130,16 @@ fun Profile(navController: NavHostController) {
                 sharedPreferences.edit().clear().apply()
                 navController.navigate(Onboarding.route)
             },
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors( Color(0xFFF4CE14)),
+            elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp),
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .align(Alignment.CenterHorizontally)
         ) {
-            Text("Log out")
+            Text("Log out", color = Color.Black, fontWeight = FontWeight.Bold)
         }
     }
 
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ProfilePreview() {
-    val navController = rememberNavController()
-    Profile(navController = navController)
-}
